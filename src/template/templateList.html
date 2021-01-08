@@ -1,0 +1,100 @@
+<head>
+  <meta charset="utf-8" />
+</head>
+
+<style>
+  .invoice-box {
+    margin: auto;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 1%;
+    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  }
+
+  .invoice-box table {
+    width: 100%;
+    line-height: inherit;
+  }
+
+  .invoice-box table {
+    padding: 5px;
+    vertical-align: top;
+  }
+
+  .invoice-box table tr.top table td {
+    padding-bottom: 20px;
+  }
+
+  .invoice-box table tr.top table td.title {
+    font-size: 45px;
+    line-height: 45px;
+  }
+
+  .invoice-box table tr.information table td {
+    padding-bottom: 40px;
+  }
+
+  .invoice-box table tr.heading td {
+    font-weight: bold;
+    border-bottom: 2px solid black;
+  }
+
+  .item {
+    margin-bottom: 5%;
+  }
+
+  table {
+    border-collapse: collapse;
+    border: 2px solid black;
+  }
+
+  .radiocir {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 5px;
+  }
+  td {
+    border: 2px solid black;
+    position: relative;
+    padding: 0px;
+    height: 75px;
+  }
+  .linea {
+    height: 75px;
+    content: "";
+    position: absolute;
+    top: 0;
+    float: left;
+    width: 50%;
+    border-right: 1px solid #000;
+  }
+  
+
+</style>
+
+<div class="invoice-box">
+    <table>
+      <tr class="heading">
+        <td style="text-align: center; width: 10%">Nombre</td>
+        <td style="text-align: center; width: 10%">Saldo Inicial</td>
+        <td style="text-align: center; width: 20%">Pollos</td>
+        <td style="text-align: center; width: 20%">Trozado</td>
+        <td style="text-align: center; width: 20%">Dulce de leche</td>
+        <td style="text-align: center; width: 10%">Total</td>
+        <td style="text-align: center; width: 10%">Saldo Final</td>
+      </tr>
+
+      {{#each arrayClients}}
+      <tr class="item">
+        <td style="text-align: center">{{name}}</td>
+        <td style="text-align: center">${{balance}}</td>
+        <td><div class="linea">&nbsp</div></td>
+        <td><div class="linea">&nbsp</div></td>
+        <td><div class="linea">&nbsp</div></td>
+        <td></td>
+        <td></td>
+      </tr>
+      {{/each}}
+    </table>
+</div>

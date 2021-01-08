@@ -1,0 +1,38 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js --exec babel-node",
+    "build": "babel src src/app.js src/index.js --out-dir dist",
+    "start": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "async": "^3.2.0",
+    "bcrypt": "^5.0.0",
+    "cryptr": "^6.0.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-static-gzip": "^2.1.0",
+    "handlebars": "^4.7.6",
+    "html-pdf": "^2.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.4.2",
+    "pg-hstore": "^2.3.3",
+    "puppeteer": "^5.5.0",
+    "sequelize": "^6.3.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "nodemon": "^2.0.6"
+  }
+}
