@@ -1,6 +1,6 @@
 export class Expense {
     id:number;
-    date:Date;
+    date:string;
     amount:number;
     description:string;
 }

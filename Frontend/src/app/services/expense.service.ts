@@ -20,7 +20,7 @@ export class ExpenseService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/expense/${page}`, { headers }).pipe(expenses => {
+    return this.http.get(`${this.url}/expense/all/${page}`, { headers }).pipe(expenses => {
       return expenses
     });
   }
