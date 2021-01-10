@@ -1,5 +1,4 @@
 import Expense from "../models/Expense";
-import Cash from "../models/Cash";
 
 const jwt = require("jsonwebtoken");
 

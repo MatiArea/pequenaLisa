@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { sequelize } from "../BaseDeDatos/database";
+import sequelize from "../BaseDeDatos/database";
 import Product from "../models/Product";
 import Sale from "./Sale";
 

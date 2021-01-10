@@ -1,0 +1,207 @@
+<div class="container-fluid">
+  <div class="col-sm-12 col-lg-2 d-flex align-items-start">
+    <button
+      type="button"
+      class="btn btn-block btn-success active"
+      (click)="opentNewPurchaseModal()"
+    >
+      Agregar Compra
+    </button>
+  </div>
+
+  <div class="card mt-2">
+    <div class="card-header">Compras</div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-4 offset-md-8 float-left">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-search"></i></span>
+            </div>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              placeholder="Buscar por nombre"
+              type="text"
+            />
+          </div>
+        </div>
+      </div>
+      <table class="table table-striped table-hover table-responsive-lg">
+        <thead>
+          <tr>
+            <th style="width: 15%" class="text-center">Fecha</th>
+            <th style="width: 25%" class="text-center">Producto</th>
+            <th style="width: 20%" class="text-center">Cantidad</th>
+            <th style="width: 20%" class="text-center">Total</th>
+            <th style="width: 20%" class="text-center"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!---->
+          <tr *ngFor="let purchase of purchases">
+            <td class="text-center">
+              {{ purchase.date | date: "dd/MM/yyyy" }}
+            </td>
+            <td class="text-center">{{ purchase.product.name }}</td>
+            <td class="text-center">{{ purchase.quantity }}</td>
+            <td class="text-center">
+              ${{
+                purchase.quantity * purchase.price | currency: "":"":".2-2":"it"
+              }}
+            </td>
+            <td class="text-center">
+              <i
+                class="fas fa-trash-alt"
+                style="cursor: pointer"
+                (click)="deletePurchase(purchase.id_purchase)"
+              ></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ul class="pagination">
+        <li class="page-item" style="cursor: pointer">
+          <a class="page-link" (click)="changePage(page - 1)">Anterior</a>
+        </li>
+        <li class="page-item active">
+          <a class="page-link">{{ page + 1 }}</a>
+        </li>
+        <li class="page-item" style="cursor: pointer">
+          <a class="page-link" (click)="changePage(page + 1)">Siguiente</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ------------NEW PURCHASE MODAL----------- -->
+<div
+  bsModal
+  #newPurchaseModal="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Nueva compra</h4>
+        <button
+          type="button"
+          class="close"
+          (click)="newPurchaseModal.hide()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form
+        (ngSubmit)="createPurchase(createForm)"
+        #createForm="ngForm"
+        id="createForm"
+      >
+        <div class="modal-body">
+          <fieldset class="form-group">
+            <div class="input-group col-md-11">
+              <label class="col-md-3 col-form-label" for="date">Fecha</label>
+              <span class="input-group-prepend"
+                ><span class="input-group-text"
+                  ><i class="fa fa-calendar"></i></span></span
+              ><input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                id="date"
+                type="date"
+                [(ngModel)]="purchase.date"
+                name="date"
+              />
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="input-group col-md-11">
+              <label class="col-md-3 col-form-label" for="searchProduct"
+                >Producto</label
+              >
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fa fa-search"></i
+                ></span>
+              </div>
+              <select
+                id="Product"
+                name="product"
+                class="form-control"
+                (change)="productSelected($event.target.value)"
+              >
+                <option value="0" selected>Seleccionar Producto</option>
+                <option
+                  *ngFor="let product of products"
+                  value="{{ product.id_product }}"
+                >
+                  {{ product.name }}
+                </option>
+              </select>
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="input-group col-md-11">
+              <label class="col-md-3 col-form-label" for="numero"
+                >Cantidad</label
+              >
+              <span class="input-group-prepend"
+                ><span class="input-group-text"
+                  ><i class="fa fa-list-ol"></i></span
+              ></span>
+              <input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                type="number"
+                name="cantidad"
+                placeholder="Cantidad"
+                [(ngModel)]="purchase.quantity"
+              />
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="input-group col-md-11">
+              <label class="col-md-3 col-form-label" for="numero">Precio</label>
+              <span class="input-group-prepend"
+                ><span class="input-group-text"
+                  ><i class="fa fa-usd"></i></span></span
+              ><input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                type="number"
+                name="precio"
+                placeholder="Precio"
+                min="0"
+                [(ngModel)]="purchase.price"
+              />
+            </div>
+          </fieldset>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="newPurchaseModal.hide()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="this.cargandoCreatePurchase === true"
+          >
+            Crear Compra
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoCreatePurchase"
+            ></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

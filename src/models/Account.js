@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import { sequelize } from "../BaseDeDatos/database";
+import sequelize from "../BaseDeDatos/database";
 
 const Account = sequelize.define(
   "account",{

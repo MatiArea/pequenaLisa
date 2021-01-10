@@ -6,7 +6,7 @@ import { validateToken } from "../middlewares/auth";
 
 /*-----GET-----*/
 router.get('/',validateToken, getAllProducts);
-router.get('/:page',validateToken, getAllProductsTable);
+router.get('/all/:page',validateToken, getAllProductsTable);
 router.get('/:id',validateToken, getOneProduct);
 
 

@@ -1,6 +1,5 @@
 import Purchase from "../models/Purchase";
 import Product from "../models/Product";
-import Cash from "../models/Cash";
 const jwt = require("jsonwebtoken");
 
 export async function createPurchase(req, res) {

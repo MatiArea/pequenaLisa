@@ -1,0 +1,67 @@
+<div class="app-body">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card-group">
+            <div class="card p-4">
+              <div class="card-body">
+                <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+                  <h1>Iniciar sesión</h1>
+                  <br />
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"
+                        ><i class="icon-user"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Usuario"
+                      [(ngModel)]="account.username"
+                      name="username"
+                      required
+                    />
+                  </div>
+                  <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"
+                        ><i class="icon-lock"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="password"
+                      class="form-control"
+                      placeholder="Contraseña"
+                      [(ngModel)]="account.password"
+                      name="password"
+                      required
+                    />
+                  </div>
+                  <div class="col-8 d-flex align-items-right">
+                    <button
+                      type="submit"
+                      value="Login"
+                      class="btn btn-primary px-4"
+                      [disabled]="this.cargando === true"
+                    >
+                      Iniciar
+
+                      <span
+                        class="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                        *ngIf="this.cargando === true"
+                      ></span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

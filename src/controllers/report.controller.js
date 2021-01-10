@@ -2,7 +2,6 @@ import Purchase from "../models/Purchase";
 import ProductSale from "../models/ProductSale";
 import Sale from "../models/Sale";
 import Expense from "../models/Expense";
-import Movement from "../models/Movement";
 import { sequelize } from "../BaseDeDatos/database";
 const Sequelize = require("sequelize");
 const op = Sequelize.Op;

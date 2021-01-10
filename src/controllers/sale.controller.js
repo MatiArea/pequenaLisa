@@ -1,7 +1,5 @@
 import Sale from "../models/Sale";
 import Product from "../models/Product";
-import Client from "../models/Client";
-import Cash from "../models/Cash";
 import ProductSale from "../models/ProductSale";
 import { each } from "async";
 import { product } from "puppeteer";

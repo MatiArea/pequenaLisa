@@ -1,0 +1,123 @@
+<div class="animated fadeIn">
+  <div class="form-group row d-flex justify-content-start col-sm-12 col-lg-12">
+    <label class="col-md-1 col-form-label" for="options"
+      >Reporte</label
+    >
+    <div class="col-md-3 col-lg-3">
+      <select
+        name="options"
+        class="form-control"
+        (change)="reportSelected($event.target.value)"
+      >
+        <option selected disabled>Seleccione una opción</option>
+        <option value="1">Diario</option>
+        <option value="2">Semanal</option>
+        <option value="3">Mensual</option>
+      </select>
+    </div>
+  </div>
+  <div
+    class="form-group row d-flex justify-content-start"
+    *ngIf="this.reportSelect == '1'"
+  >
+    <label class="col-md-1 col-form-label text-right" for="day">Dia</label>
+    <div class="col-md-2 col-lg-2">
+      <input
+        type="date"
+        id="day"
+        name="day"
+        class="form-control"
+        [(ngModel)]="day"
+        (change)="generateDayReport()"
+        ngModel
+      />
+    </div>
+  </div>
+  <div
+    class="form-group row d-flex justify-content-start"
+    *ngIf="this.reportSelect == '2'"
+  >
+      <label class="col-md-1 col-form-label text-right" for="day">Desde</label>
+      <div class="col-md-2 col-lg-2">
+        <input
+          type="date"
+          id="init"
+          name="init"
+          class="form-control"
+          [(ngModel)]="init"
+          ngModel
+        />
+      </div>
+      <label class="col-md-1 col-form-label text-right" for="day">Hasta</label>
+      <div class="col-md-2 col-lg-2">
+        <input
+          type="date"
+          id="finish"
+          name="finish"
+          class="form-control"
+          [(ngModel)]="finish"
+          ngModel
+        />
+      </div>
+      <div class="col-md-2 col-lg-2">
+        <button
+          type="button"
+          class="btn btn-block btn-success .btn-large active"
+          (click)="generateWeekReport()"
+          >Generar Reporte</button>
+      </div>
+  </div>
+  <div
+    class="form-group row d-flex justify-content-start"
+    *ngIf="this.reportSelect == '3'"
+  >
+    <label class="col-md-1 col-form-label text-right" for="day">Mes</label>
+    <div class="col-md-2 col-lg-2">
+      <select
+        id="Month"
+        name="month"
+        [(ngModel)]="month"
+        class="form-control"
+        (change)="monthSelected($event.target.value)"
+      >
+        <option selected disabled>Seleccione un mes</option>
+        <option
+          *ngFor="let month of months; let index = index"
+          value="{{ index + 1 }}"
+        >
+          {{ month }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row d-flex justify-content-center">
+    <div class="col-sm-6 col-md-4">
+      <div class="card text-white bg-success">
+        <div class="card-header">Ganancia Bruta</div>
+        <div class="card-body text-center font-weight-bold">
+          $ {{ total.gananciaBruta }}
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="card text-white bg-success">
+        <div class="card-header">Ganancia Neta</div>
+        <div class="card-body text-center font-weight-bold">
+          $ {{ total.gananciaNeta }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="this.show===true" class="animated fadeIn">
+    <canvas
+        baseChart
+        [datasets]="data"
+        [labels]="labels"
+        [options]="chartOptions"
+        [legend]="legend"
+        [chartType]="type"
+      >
+      </canvas>
+  </div>
+  <hr />
+</div>

@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import { sequelize } from "../BaseDeDatos/database";
+import sequelize from "../BaseDeDatos/database";
 
 const Product = sequelize.define(
   "product",
@@ -10,21 +10,21 @@ const Product = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
-    code: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
     name: {
       type: Sequelize.STRING,
       allowNull: false,
     },
     stock: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
       allowNull: false,
     },
     cost_price: {
       type: Sequelize.JSON,
       allowNull: false,
+    },
+    sale_price:{
+      type:Sequelize.FLOAT,
+      allowNull: false
     }
   },
   {
