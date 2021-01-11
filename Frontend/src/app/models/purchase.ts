@@ -1,6 +1,8 @@
+import { Json } from "sequelize/types/lib/utils";
+
 export class Purchase {
     id:number;
-    date:Date;
-    quantity:number;
-    price:number;
+    date:string;
+    items:Array<Json>;
+    total:number;
 }
