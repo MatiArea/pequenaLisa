@@ -7,7 +7,7 @@ async function main() {
   var host = process.env.HOST || "0.0.0.0";
   try {
     await app.listen(port, host, function () {
-      console.log("Listening on port %d", server_port);
+      console.log("Listening on port %d", port);
     });
     await sequelize
       .sync({ force: false })
