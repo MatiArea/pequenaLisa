@@ -14,6 +14,9 @@ node_modules
 chrome-profiler-events*.json
 speed-measure-plugin*.json
 
+# Dev enviroment
+*.env
+
 # IDEs and editors
 /.idea
 .project
