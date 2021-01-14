@@ -85,14 +85,16 @@ export async function monthReport(req, res) {
     var year = new Date().getFullYear();
     await Sale.findAll({
       where: {
-        andOp: sequelize.where(
-          sequelize.fn("date_part", "month", sequelize.col("date")),
-          month
-        ),
-        andOp: sequelize.where(
-          sequelize.fn("date_part", "year", sequelize.col("date")),
-          year
-        ),
+        [op.and]: [
+          sequelize.where(
+            sequelize.fn("date_part", "month", sequelize.col("date")),
+            month
+          ),
+          sequelize.where(
+            sequelize.fn("date_part", "year", sequelize.col("date")),
+            year
+          ),
+        ],
       },
       attributes: ["total"],
       include: [{ model: ProductSale }],
@@ -100,28 +102,32 @@ export async function monthReport(req, res) {
       .then(async (sales) => {
         await Expense.findAll({
           where: {
-            andOp: sequelize.where(
-              sequelize.fn("date_part", "month", sequelize.col("date")),
-              month
-            ),
-            andOp: sequelize.where(
-              sequelize.fn("date_part", "year", sequelize.col("date")),
-              year
-            ),
+            [op.and]: [
+              sequelize.where(
+                sequelize.fn("date_part", "month", sequelize.col("date")),
+                month
+              ),
+              sequelize.where(
+                sequelize.fn("date_part", "year", sequelize.col("date")),
+                year
+              ),
+            ],
           },
           attributes: ["amount"],
         })
           .then(async (expenses) => {
             await Purchase.findAll({
               where: {
-                andOp: sequelize.where(
-                  sequelize.fn("date_part", "month", sequelize.col("date")),
-                  month
-                ),
-                andOp: sequelize.where(
-                  sequelize.fn("date_part", "year", sequelize.col("date")),
-                  year
-                ),
+                [op.and]: [
+                  sequelize.where(
+                    sequelize.fn("date_part", "month", sequelize.col("date")),
+                    month
+                  ),
+                  sequelize.where(
+                    sequelize.fn("date_part", "year", sequelize.col("date")),
+                    year
+                  ),
+                ],
               },
               attributes: ["total"],
             })
@@ -167,11 +173,11 @@ export async function yearReport(req, res) {
           year
         ),
       },
-      attributes: ["payment", "total"],
+      attributes: ["total"],
       include: [{ model: ProductSale }],
     })
       .then(async (sales) => {
-        await Movement.findAll({
+        await Expense.findAll({
           where: {
             andOp: sequelize.where(
               sequelize.fn("date_part", "year", sequelize.col("date")),
@@ -180,53 +186,41 @@ export async function yearReport(req, res) {
           },
           attributes: ["amount"],
         })
-          .then(async (movements) => {
-            await Expense.findAll({
+          .then(async (expenses) => {
+            await Purchase.findAll({
               where: {
                 andOp: sequelize.where(
                   sequelize.fn("date_part", "year", sequelize.col("date")),
                   year
                 ),
               },
-              attributes: ["amount"],
+              attributes: ["total"],
             })
-              .then(async (expenses) => {
-                await Purchase.findAll({
-                  where: {
-                    andOp: sequelize.where(
-                      sequelize.fn("date_part", "year", sequelize.col("date")),
-                      year
-                    ),
-                  },
-                  attributes: ["quantity", "price"],
-                })
-                  .then(async (purchases) => {
-                    res.status(200).json({
-                      sales,
-                      movements,
-                      expenses,
-                      purchases,
-                    });
-                  })
-                  .catch((error) => {
-                    return res.status(500).json({
-                      message: "Error not information",
-                    });
-                  });
+              .then(async (purchases) => {
+                res.status(200).json({
+                  sales,
+                  expenses,
+                  purchases,
+                });
               })
               .catch((error) => {
+                console.log(error);
                 return res.status(500).json({
                   message: "Error not information",
                 });
               });
           })
           .catch((error) => {
+            console.log(error);
+
             return res.status(500).json({
               message: "Error not information",
             });
           });
       })
       .catch((error) => {
+        console.log(error);
+
         return res.status(500).json({
           message: "Error not information",
         });

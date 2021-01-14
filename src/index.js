@@ -12,7 +12,7 @@ async function main() {
     await sequelize
       .sync({ force: false })
       .then(() => {
-        console.log("Base de datos conectada");
+        console.log("Database connected");
       })
       .catch((error) => {
         console.log("Se ha producido un error", error);

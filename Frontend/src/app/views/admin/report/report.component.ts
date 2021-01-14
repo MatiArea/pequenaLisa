@@ -23,6 +23,7 @@ export class ReportComponent implements OnInit {
   ganancia: number
   reportSelect: string
   day: string
+  year:string
   init: string
   finish: string
   month: string
@@ -113,6 +114,34 @@ export class ReportComponent implements OnInit {
 
 
     this.reportService.monthReport(this.month).subscribe(data => {
+      each(data['sales'], (sale) => {
+        this.total.totalSales += sale.total
+        each(sale.productsales, (item) => {
+          this.total.totalCostProducts += item.quantity * item.cost_price
+        })
+      });
+      each(data['purchases'], (purchase) => {
+        this.total.totalPurchases += purchase.total
+      });
+      each(data['expenses'], (expense) => {
+        this.total.totalExpenses += expense.amount
+      });
+      this.data = [
+        { data: [this.total.totalSales, this.total.totalPurchases, this.total.totalExpenses], label: 'Movimientos' }
+      ];
+
+      this.total.gananciaBruta = this.total.totalSales
+      this.total.gananciaNeta = this.total.totalSales - this.total.totalCostProducts - this.total.totalExpenses - this.total.totalPurchases
+
+    })
+  }
+
+  generateYearReport() {
+    this.total = new Report()
+    this.show = true
+
+
+    this.reportService.yearReport(this.year).subscribe(data => {
       console.log(data)
       each(data['sales'], (sale) => {
         this.total.totalSales += sale.total

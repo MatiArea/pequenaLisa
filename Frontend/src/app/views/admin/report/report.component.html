@@ -7,7 +7,7 @@
 
 <div class="animated fadeIn">
   <div class="form-group row d-flex justify-content-start col-sm-12 col-lg-12">
-    <label class="col-md-1 col-form-label" for="options">Reporte</label>
+    <label class="col-md-1 col-form-label text-right" for="options">Reporte</label>
     <div class="col-md-3 col-lg-3">
       <select
         name="options"
@@ -101,17 +101,27 @@
     class="form-group row d-flex justify-content-start"
     *ngIf="this.reportSelect == '3'"
   >
-    <label class="col-md-1 col-form-label text-right" for="day">Año</label>
+    <label class="col-md-1 col-form-label text-right" for="year">Año</label>
     <div class="col-md-2 col-lg-2">
       <input
-        type="text"
+        type="number"
         id="year"
         name="year"
         class="form-control date-own"
-        [(ngModel)]="day"
-        (change)="generateDayReport()"
+        [(ngModel)]="year"
+        placeholder="2000"
+        min="2000"
         ngModel
       />
+    </div>
+    <div class="col-md-2 col-lg-2">
+      <button
+        type="button"
+        class="btn btn-block btn-success .btn-large active"
+        (click)="generateYearReport()"
+      >
+        Generar Reporte
+      </button>
     </div>
   </div>
 

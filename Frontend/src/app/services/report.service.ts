@@ -50,4 +50,17 @@ export class ReportService {
       return data
     });
   }
+
+  yearReport(year: string) {
+    const token = sessionStorage.getItem('token');
+    const tokenString = 'Bearer ' + token
+
+    const headers = new HttpHeaders({
+      'Authorization': tokenString,
+    })
+
+    return this.http.get(`${this.url}/report/yeareport/${year}`, { headers }).pipe(data => {
+      return data
+    });
+  }
 }
