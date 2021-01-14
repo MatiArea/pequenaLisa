@@ -1,5 +1,6 @@
 export class Sale {
     id:number;
-    date:Date;
+    date:string;
     total:number;
+    items:any;
 }

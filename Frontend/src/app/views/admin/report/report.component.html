@@ -1,8 +1,13 @@
+<script>
+  $(".date-own").datepicker({
+    minViewMode: 2,
+    format: "yyyy",
+  });
+</script>
+
 <div class="animated fadeIn">
   <div class="form-group row d-flex justify-content-start col-sm-12 col-lg-12">
-    <label class="col-md-1 col-form-label" for="options"
-      >Reporte</label
-    >
+    <label class="col-md-1 col-form-label" for="options">Reporte</label>
     <div class="col-md-3 col-lg-3">
       <select
         name="options"
@@ -11,8 +16,8 @@
       >
         <option selected disabled>Seleccione una opción</option>
         <option value="1">Diario</option>
-        <option value="2">Semanal</option>
-        <option value="3">Mensual</option>
+        <option value="2">Mensual</option>
+        <option value="3">Anual</option>
       </select>
     </div>
   </div>
@@ -37,39 +42,41 @@
     class="form-group row d-flex justify-content-start"
     *ngIf="this.reportSelect == '2'"
   >
-      <label class="col-md-1 col-form-label text-right" for="day">Desde</label>
-      <div class="col-md-2 col-lg-2">
-        <input
-          type="date"
-          id="init"
-          name="init"
-          class="form-control"
-          [(ngModel)]="init"
-          ngModel
-        />
-      </div>
-      <label class="col-md-1 col-form-label text-right" for="day">Hasta</label>
-      <div class="col-md-2 col-lg-2">
-        <input
-          type="date"
-          id="finish"
-          name="finish"
-          class="form-control"
-          [(ngModel)]="finish"
-          ngModel
-        />
-      </div>
-      <div class="col-md-2 col-lg-2">
-        <button
-          type="button"
-          class="btn btn-block btn-success .btn-large active"
-          (click)="generateWeekReport()"
-          >Generar Reporte</button>
-      </div>
+    <label class="col-md-1 col-form-label text-right" for="day">Desde</label>
+    <div class="col-md-2 col-lg-2">
+      <input
+        type="date"
+        id="init"
+        name="init"
+        class="form-control"
+        [(ngModel)]="init"
+        ngModel
+      />
+    </div>
+    <label class="col-md-1 col-form-label text-right" for="day">Hasta</label>
+    <div class="col-md-2 col-lg-2">
+      <input
+        type="date"
+        id="finish"
+        name="finish"
+        class="form-control"
+        [(ngModel)]="finish"
+        ngModel
+      />
+    </div>
+    <div class="col-md-2 col-lg-2">
+      <button
+        type="button"
+        class="btn btn-block btn-success .btn-large active"
+        (click)="generateWeekReport()"
+      >
+        Generar Reporte
+      </button>
+    </div>
   </div>
   <div
     class="form-group row d-flex justify-content-start"
-    *ngIf="this.reportSelect == '3'"
+    *ngIf="this.reportSelect == '2'"
   >
     <label class="col-md-1 col-form-label text-right" for="day">Mes</label>
     <div class="col-md-2 col-lg-2">
@@ -90,6 +97,24 @@
       </select>
     </div>
   </div>
+  <div
+    class="form-group row d-flex justify-content-start"
+    *ngIf="this.reportSelect == '3'"
+  >
+    <label class="col-md-1 col-form-label text-right" for="day">Año</label>
+    <div class="col-md-2 col-lg-2">
+      <input
+        type="text"
+        id="year"
+        name="year"
+        class="form-control date-own"
+        [(ngModel)]="day"
+        (change)="generateDayReport()"
+        ngModel
+      />
+    </div>
+  </div>
+
   <div class="form-group row d-flex justify-content-center">
     <div class="col-sm-6 col-md-4">
       <div class="card text-white bg-success">
@@ -108,16 +133,16 @@
       </div>
     </div>
   </div>
-  <div *ngIf="this.show===true" class="animated fadeIn">
+  <div *ngIf="this.show === true" class="animated fadeIn">
     <canvas
-        baseChart
-        [datasets]="data"
-        [labels]="labels"
-        [options]="chartOptions"
-        [legend]="legend"
-        [chartType]="type"
-      >
-      </canvas>
+      baseChart
+      [datasets]="data"
+      [labels]="labels"
+      [options]="chartOptions"
+      [legend]="legend"
+      [chartType]="type"
+    >
+    </canvas>
   </div>
   <hr />
 </div>

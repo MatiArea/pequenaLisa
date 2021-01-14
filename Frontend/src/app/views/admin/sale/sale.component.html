@@ -30,9 +30,7 @@
         <thead>
           <tr>
             <th style="width: 15%" class="text-center">Fecha</th>
-            <th style="width: 25%" class="text-center">Cliente</th>
             <th style="width: 20%" class="text-center">Total</th>
-            <th style="width: 20%" class="text-center">Pago</th>
             <th style="width: 20%" class="text-center"></th>
           </tr>
         </thead>
@@ -40,12 +38,8 @@
           <!---->
           <tr *ngFor="let sale of sales">
             <td class="text-center">{{ sale.date | date: "dd/MM/yyyy" }}</td>
-            <td class="text-center">{{ sale.client.name }}</td>
             <td class="text-center">
               ${{ sale.total | currency: "":"":".2-2":"it" }}
-            </td>
-            <td class="text-center">
-              ${{ sale.payment | currency: "":"":".2-2":"it" }}
             </td>
             <td class="text-center">
               <i
@@ -122,84 +116,44 @@
           </fieldset>
           <fieldset class="form-group">
             <div class="input-group col-md-11">
-              <label class="col-md-3 col-form-label" for="searchClient"
-                >Cliente</label
-              >
-              <div class="input-group-prepend">
-                <span class="input-group-text"
-                  ><i class="fa fa-search"></i
-                ></span>
-              </div>
-              <select
-                id="Client"
-                name="client"
-                class="form-control"
-                (change)="clientSelected($event.target.value)"
-              >
-                <option value="0" selected>Seleccionar Cliente</option>
-                <option
-                  *ngFor="let client of clients"
-                  value="{{ client.id_client }}"
-                >
-                  {{ client.name }}
-                </option>
-              </select>
-            </div>
-          </fieldset>
-          <fieldset class="form-group">
-            <div class="input-group col-md-11">
               <label class="col-md-3 col-form-label" for="searchProduct"
                 >Producto</label
               >
-              <div class="input-group-prepend">
-                <span class="input-group-text"
-                  ><i class="fa fa-search"></i
-                ></span>
-              </div>
-              <select
-                id="Product"
-                name="product"
-                class="form-control"
-                (change)="productSelected($event.target.value)"
-              >
-                <option value="undefined" disabled selected>
-                  Seleccionar Producto
-                </option>
-                <option
-                  *ngFor="let product of products; index as indexProduct"
-                  value="{{ indexProduct }}"
-                >
-                  {{ product.name }}
-                </option>
-              </select>
-            </div>
-          </fieldset>
-          <fieldset class="form-group">
-            <form #addForm="ngForm" (submit)="addItem(addForm)" id="addForm">
-              <div class="input-group col-md-11">
-                <input
-                  class="form-control ml-3"
-                  type="number"
-                  name="sale_price"
-                  placeholder="Precio de Venta"
-                  min="0"
-                  [(ngModel)]="sale_price"
-                />
-                <input
-                  class="form-control ml-4"
-                  type="number"
-                  name="cantidad"
-                  placeholder="Cantidad"
-                  min="0"
-                  [(ngModel)]="quantity"
-                />
-                <div class="text-center ml-3">
-                  <button type="submit" class="btn btn-block btn-success">
-                    <i class="fa fa-plus"></i> Agregar
-                  </button>
+              <form #addForm="ngForm" (submit)="addItem(addForm)" id="addForm">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="fa fa-search"></i
+                  ></span>
+                  <select
+                    id="Product"
+                    name="product"
+                    class="form-control"
+                    (change)="productSelected($event.target.value)"
+                    ngModel
+                  >
+                    <option
+                      *ngFor="let product of products; index as indexProduct"
+                      value="{{ indexProduct }}"
+                    >
+                      {{ product.name }}
+                    </option>
+                  </select>
+                  <input
+                    class="form-control ml-4"
+                    type="number"
+                    name="cantidad"
+                    placeholder="Cantidad"
+                    min="0"
+                    [(ngModel)]="quantity"
+                  />
+                  <div class="text-center ml-3">
+                    <button type="submit" class="btn btn-block btn-success">
+                      <i class="fa fa-plus"></i> Agregar
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </fieldset>
           <fieldset class="form-group">
             <div class="col-lg-12 mt-2">
@@ -223,10 +177,12 @@
                       <tr *ngFor="let item of items">
                         <td class="text-center">{{ item.product.name }}</td>
                         <td class="text-center">{{ item.quantity }}</td>
-                        <td class="text-center">{{ item.sale_price }}</td>
+                        <td class="text-center">
+                          {{ item.product.sale_price }}
+                        </td>
                         <td class="text-center">
                           $
-                          {{ item.quantity * item.sale_price }}
+                          {{ item.quantity * item.product.sale_price }}
                         </td>
                         <td class="text-center">
                           <i
@@ -250,21 +206,6 @@
               ><input
                 class="form-control ng-untouched ng-pristine ng-valid"
                 type="number"
-                placeholder="Pago"
-                [(ngModel)]="sale.payment"
-                min="0"
-                name="payment"
-              />
-            </div>
-          </fieldset>
-          <fieldset class="form-group d-flex justify-content-end">
-            <div class="input-group col-md-5">
-              <span class="input-group-prepend"
-                ><span class="input-group-text"
-                  ><i class="fa fa-usd"></i></span></span
-              ><input
-                class="form-control ng-untouched ng-pristine ng-valid"
-                type="number"
                 placeholder="Total"
                 [(ngModel)]="sale.total"
                 name="total"
@@ -278,7 +219,7 @@
           <button
             type="button"
             class="btn btn-danger"
-            (click)="newSaleModal.hide()"
+            (click)="createForm.reset(); addForm.reset(); newSaleModal.hide()"
           >
             Cancelar
           </button>
@@ -342,25 +283,6 @@
             </div>
           </fieldset>
           <fieldset class="form-group">
-            <div class="input-group col-md-11">
-              <label class="col-md-3 col-form-label" for="searchClient"
-                >Cliente</label
-              >
-              <div class="input-group-prepend">
-                <span class="input-group-text"
-                  ><i class="fa fa-search"></i
-                ></span>
-              </div>
-              <input
-                class="form-control ng-untouched ng-pristine ng-valid"
-                type="text"
-                [(ngModel)]="saleView.name_client"
-                name="name_client"
-                disabled
-              />
-            </div>
-          </fieldset>
-          <fieldset class="form-group">
             <div class="col-lg-12 mt-2">
               <div class="card">
                 <div class="card-header">
@@ -370,7 +292,6 @@
                   <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th class="text-center">Codigo</th>
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Cantidad</th>
                         <th class="text-center">Subtotal</th>
@@ -379,7 +300,6 @@
                     <tbody>
                       <!---->
                       <tr *ngFor="let item of saleView.items">
-                        <td class="text-center">{{ item.product.code }}</td>
                         <td class="text-center">{{ item.product.name }}</td>
                         <td class="text-center">
                           {{ item.quantity }}
@@ -402,26 +322,9 @@
               ><input
                 class="form-control ng-untouched ng-pristine ng-valid"
                 type="number"
-                placeholder="Pago"
-                [(ngModel)]="saleView.payment"
-                name="payment"
-                min="0"
-                disabled
-              />
-            </div>
-          </fieldset>
-          <fieldset class="form-group d-flex justify-content-end">
-            <div class="input-group col-md-5">
-              <span class="input-group-prepend"
-                ><span class="input-group-text"
-                  ><i class="fa fa-usd"></i></span></span
-              ><input
-                class="form-control ng-untouched ng-pristine ng-valid"
-                type="number"
                 placeholder="Total"
                 [(ngModel)]="saleView.total"
                 name="total"
-                min="0"
                 disabled
               />
             </div>

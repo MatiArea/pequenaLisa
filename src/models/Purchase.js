@@ -30,15 +30,27 @@ const Purchase = sequelize.define(
 //Relations
 
 Purchase.belongsToMany(Product, {
-  through: { model: ProductPurchase, unique: false, onDelete: "cascade" },
+  through: { model: ProductPurchase, unique: false },
 });
 Product.belongsToMany(Purchase, {
-  through: { model: ProductPurchase, unique: false, onDelete: "cascade" },
+  through: { model: ProductPurchase, unique: false },
 });
 
-ProductPurchase.belongsTo(Product, { foreignKey: "id_product" });
-ProductPurchase.belongsTo(Purchase, { foreignKey: "id_purchase" });
-Product.hasMany(ProductPurchase, { foreignKey: "id_product" });
-Purchase.hasMany(ProductPurchase, { foreignKey: "id_purchase" });
+ProductPurchase.belongsTo(Product, {
+  foreignKey: "id_product",
+  onDelete: "cascade",
+});
+ProductPurchase.belongsTo(Purchase, {
+  foreignKey: "id_purchase",
+  onDelete: "cascade",
+});
+Product.hasMany(ProductPurchase, {
+  foreignKey: "id_product",
+  onDelete: "cascade",
+});
+Purchase.hasMany(ProductPurchase, {
+  foreignKey: "id_purchase",
+  onDelete: "cascade",
+});
 
 export default Purchase;

@@ -11,7 +11,7 @@ import { validateToken } from "../middlewares/auth";
 const router = Router();
 
 /*-----GET-----*/
-router.get("/:page", validateToken, getAllSales);
+router.get("/all/:page", validateToken, getAllSales);
 router.get("/:id", validateToken, getOneSale);
 
 /*-----POST-----*/

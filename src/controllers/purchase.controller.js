@@ -102,70 +102,70 @@ export async function deletePurchase(req, res) {
         message: "Error, invalid token",
       });
     }
-    let idPurchase = req.params.id;
-    await Purchase.findByPk(idPurchase, {
-      include: [{ model: ProductPurchase }],
-    })
-      .then((purchase) => {
-        purchase.productpurchases.forEach(async (item) => {
-          await Product.findByPk(item.id_product).then(async (product) => {
-            let arrayPrice = [];
+    // let idPurchase = req.params.id;
+    // await Purchase.findByPk(idPurchase, {
+    //   include: [{ model: ProductPurchase }],
+    // })
+    //   .then((purchase) => {
+    //     purchase.productpurchases.forEach(async (item) => {
+    //       await Product.findByPk(item.id_product).then(async (product) => {
+    //         let arrayPrice = [];
 
-            product.cost_price.forEach((element) => {
-              arrayPrice.push(element);
-            });
+    //         product.cost_price.forEach((element) => {
+    //           arrayPrice.push(element);
+    //         });
 
-            let price = {
-              quantity: item.quantity,
-              price: item.price,
-            };
+    //         let price = {
+    //           quantity: item.quantity,
+    //           price: item.price,
+    //         };
 
-            removeItemFromArr(arrayPrice,price)
-            product
-              .update(
-                {
-                  stock: product.stock - item.quantity,
-                  cost_price: arrayPrice,
-                },
-                {
-                  where: {
-                    id_product: item.id_product,
-                  },
-                }
-              )
-              .then(() => {
-                item.destroy().then();
-              });
-          });
-        });
-        purchase
-          .destroy()
-          .then((purchaseDestroy) => {
-            if (purchaseDestroy) {
-              return res.status(200).json({
-                message: "Purchase deleted succeffully",
-              });
-            } else {
-              console.log("error");
+    //         removeItemFromArr(arrayPrice,price)
+    //         product
+    //           .update(
+    //             {
+    //               stock: product.stock - item.quantity,
+    //               cost_price: arrayPrice,
+    //             },
+    //             {
+    //               where: {
+    //                 id_product: item.id_product,
+    //               },
+    //             }
+    //           )
+    //           .then(() => {
+    //             item.destroy().then();
+    //           });
+    //       });
+    //     });
+    //     purchase
+    //       .destroy()
+    //       .then((purchaseDestroy) => {
+    //         if (purchaseDestroy) {
+    //           return res.status(200).json({
+    //             message: "Purchase deleted succeffully",
+    //           });
+    //         } else {
+    //           console.log("error");
 
-              return res.status(500).json({
-                message: "Error, purchase not deleted",
-              });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            return res.status(500).json({
-              message: "Error, purchase not deleted",
-            });
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        return res.status(500).json({
-          message: "Purchase not exist",
-        });
-      });
+    //           return res.status(500).json({
+    //             message: "Error, purchase not deleted",
+    //           });
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //         return res.status(500).json({
+    //           message: "Error, purchase not deleted",
+    //         });
+    //       });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     return res.status(500).json({
+    //       message: "Purchase not exist",
+    //     });
+    //   });
   });
 }
 
