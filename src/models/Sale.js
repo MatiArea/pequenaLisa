@@ -33,9 +33,15 @@ const Sale = sequelize.define(
 Sale.belongsToMany(Product, { through: { model: ProductSale, unique: false } });
 Product.belongsToMany(Sale, { through: { model: ProductSale, unique: false } });
 
-ProductSale.belongsTo(Product, { foreignKey: "id_product" });
-ProductSale.belongsTo(Sale, { foreignKey: "id_sale" });
-Product.hasMany(ProductSale, { foreignKey: "id_product" });
-Sale.hasMany(ProductSale, { foreignKey: "id_sale" });
+ProductSale.belongsTo(Product, {
+  foreignKey: "id_product",
+  onDelete: "SET NULL",
+});
+ProductSale.belongsTo(Sale, { foreignKey: "id_sale", onDelete: "SET NULL" });
+Product.hasMany(ProductSale, {
+  foreignKey: "id_product",
+  onDelete: "SET NULL",
+});
+Sale.hasMany(ProductSale, { foreignKey: "id_sale", onDelete: "SET NULL" });
 
 export default Sale;

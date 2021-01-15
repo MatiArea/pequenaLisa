@@ -2,6 +2,7 @@
 
 # compiled output
 /dist
+/Frontend/dist
 /tmp
 /out-tsc
 /public

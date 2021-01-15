@@ -1,7 +1,7 @@
 import Sale from "../models/Sale";
 import Product from "../models/Product";
 import ProductSale from "../models/ProductSale";
-import { each } from "async";
+import { each, eachOf } from "async";
 import { product } from "puppeteer";
 const jwt = require("jsonwebtoken");
 
@@ -104,6 +104,92 @@ export async function deleteSale(req, res) {
         message: "Error, invalid token",
       });
     }
+    let params = req.params;
+    if (params) {
+      await Sale.findByPk(params.id, {
+        include: [{ model: ProductSale }, { model: Product }],
+        through: {
+          model: ProductSale,
+        },
+      })
+        .then(async (sale) => {
+          var cost_array = [];
+          each(sale.productsales, async (item) => {
+            if (cost_array.length == 0) {
+              cost_array.push({
+                id_product: item.id_product,
+                quantity: item.quantity,
+                cost_price: [
+                  { quantity: item.quantity, price: item.cost_price },
+                ],
+              });
+            } else {
+              let bandera = true;
+              for (let index = 0; index < cost_array.length; index++) {
+                if (cost_array[index].id_product == item.id_product) {
+                  cost_array[index].quantity += item.quantity;
+                  cost_array[index].cost_price.push({
+                    quantity: item.quantity,
+                    price: item.cost_price,
+                  });
+                  bandera = false;
+                  break;
+                }
+              }
+              if (bandera) {
+                cost_array.push({
+                  id_product: item.id_product,
+                  quantity: item.quantity,
+                  cost_price: [
+                    { quantity: item.quantity, price: item.cost_price },
+                  ],
+                });
+              }
+            }
+            await item.destroy().then();
+          });
+          each(sale.products, async (product) => {
+            let arrayCost = [];
+            product.cost_price.forEach((element) => {
+              arrayCost.push(element);
+            });
+            for (let index = 0; index < cost_array.length; index++) {
+              if (cost_array[index].id_product == product.id_product) {
+                product.stock += cost_array[index].quantity;
+                product.cost_price = cost_array[index].cost_price.concat(
+                  arrayCost
+                );
+                await product.save().then();
+                break;
+              }
+            }
+          });
+          await sale
+            .destroy()
+            .then((saleDeleted) => {
+              if (saleDeleted) {
+                return res.status(200).json({
+                  message: "Sale deleted succefully",
+                });
+              }
+            })
+            .catch((error) => {
+              return res.status(500).json({
+                message: "Error, sale not deleted",
+              });
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+          return res.status(500).json({
+            message: "Error, sale not exist",
+          });
+        });
+    } else {
+      return res.status(500).json({
+        message: "Error, sale not exist",
+      });
+    }
   });
 }
 
@@ -151,10 +237,10 @@ export async function getAllSales(req, res) {
         message: "Error, invalid token",
       });
     }
-    let offset = req.params.page
+    let offset = req.params.page;
     Sale.findAll({
       offset,
-      limit:10,
+      limit: 10,
       order: [["date", "DESC"]],
     }).then((sales) => {
       return res.status(200).json({
